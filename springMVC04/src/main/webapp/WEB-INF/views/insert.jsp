@@ -8,5 +8,11 @@
 </head>
 <body>
 insert 요청 완료!!
+
+
+
+
+
+
 </body>
 </html>

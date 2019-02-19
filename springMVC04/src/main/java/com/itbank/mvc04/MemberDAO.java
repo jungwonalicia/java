@@ -7,6 +7,44 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberDAO {
 	
+	public MemberDTO select(MemberDTO dto) throws Exception {
+		//1. 드라이버 셋팅
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		//2. DB연결
+		String url = "jdbc:mysql://localhost:3366/spring";
+		String user = "root";
+		String password = "1234";
+		
+		Connection con = DriverManager.getConnection(url, user, password);
+		
+		//3. SQL문 객체화
+		String sql = "select * from member where id = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, dto.getId());
+		
+		//4. SQL문 실행 요청
+		ResultSet rs = ps.executeQuery();
+		
+		MemberDTO dto2 = null;
+		if(rs.next()) {
+			dto2  = new MemberDTO();
+			String id = rs.getString(1);
+			String pw = rs.getString(2);
+			String name = rs.getString(3);
+			String tel = rs.getString(4);
+			dto2.setId(id);
+			dto2.setPw(pw);
+			dto2.setName(name);
+			dto2.setTel(tel);
+		}
+		
+		con.close();
+		ps.close();
+		
+		return dto2;
+	}
+	
 	public void update(MemberDTO dto) throws Exception {
 		//1. 드라이버 셋팅
 		Class.forName("com.mysql.jdbc.Driver");
